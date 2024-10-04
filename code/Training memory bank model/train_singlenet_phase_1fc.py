@@ -25,8 +25,8 @@ import os
 parser = argparse.ArgumentParser(description='lstm training')
 parser.add_argument('-g', '--gpu', default=True, type=bool, help='gpu use, default True')
 parser.add_argument('-s', '--seq', default=10, type=int, help='sequence length, default 10')
-parser.add_argument('-t', '--train', default=400, type=int, help='train batch size, default 400')
-parser.add_argument('-v', '--val', default=320, type=int, help='valid batch size, default 10')
+parser.add_argument('-t', '--train', default=20, type=int, help='train batch size, default 400')
+parser.add_argument('-v', '--val', default=10, type=int, help='valid batch size, default 10')
 parser.add_argument('-o', '--opt', default=0, type=int, help='0 for sgd 1 for adam, default 1')
 parser.add_argument('-m', '--multi', default=1, type=int, help='0 for single opt, 1 for multi opt, default 1')
 parser.add_argument('-e', '--epo', default=25, type=int, help='epochs to train and val, default 25')
@@ -251,7 +251,7 @@ def get_data(data_path):
     print('valid_paths_19  : {:6d}'.format(len(val_paths_80)))
     print('valid_labels_19 : {:6d}'.format(len(val_labels_80)))
 
-    train_labels_19 = np.asarray(train_labels_19, dtype=np.int64)
+    # train_labels_19 = np.asarray(train_labels_19, dtype=np.int64)
     train_labels_80 = np.asarray(train_labels_80, dtype=np.int64)
     val_labels_80 = np.asarray(val_labels_80, dtype=np.int64)
 
@@ -661,10 +661,10 @@ def train_model(train_dataset, train_num_each, val_dataset, val_num_each):
                      + "_train_" + str(save_train_phase) \
                      + "_val_" + str(save_val_phase)
 
-        torch.save(best_model_wts, "./best_model/lr5e-4_do/"+base_name+".pth")
+        torch.save(best_model_wts, "./best_model/"+base_name+".pth")
         print("best_epoch",str(best_epoch))
 
-        torch.save(model.module.state_dict(), "./temp/lr5e-4_do/latest_model_"+str(epoch)+".pth")
+        torch.save(model.module.state_dict(), "./temp/latest_model_"+str(epoch)+".pth")
 
 
 

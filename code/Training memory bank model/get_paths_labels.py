@@ -2,8 +2,8 @@ import os
 import numpy as np
 import pickle
 
-root_dir2 = '../../data/cholec80/'
-img_dir2 = os.path.join(root_dir2, 'cutMargin')
+root_dir2 = '../../data/LungSeg/'
+img_dir2 = os.path.join(root_dir2, 'frames')
 phase_dir2 = os.path.join(root_dir2, 'phase_annotations')
 
 #train_video_num = 8
@@ -47,8 +47,7 @@ img_dir_names2, img_dir_paths2 = get_dirs2(img_dir2)
 phase_file_names2, phase_file_paths2 = get_files2(phase_dir2)
 
 phase_dict = {}
-phase_dict_key = ['Preparation', 'CalotTriangleDissection', 'ClippingCutting', 'GallbladderDissection',
-                  'GallbladderPackaging', 'CleaningCoagulation', 'GallbladderRetraction']
+phase_dict_key = ['0', '1', '2', '3', '4', '5', '6']
 for i in range(len(phase_dict_key)):
     phase_dict[phase_dict_key[i]] = i
 print(phase_dict)
@@ -59,10 +58,10 @@ print(phase_dict)
 all_info_all2 = []
 
 for j in range(len(phase_file_names2)):
-    downsample_rate = 25
+    downsample_rate = 1
     phase_file = open(phase_file_paths2[j])
 
-    video_num_file = int(os.path.splitext(os.path.basename(phase_file_paths2[j]))[0][5:7])
+    video_num_file = int(os.path.splitext(os.path.basename(phase_file_paths2[j]))[0])
     video_num_dir = int(os.path.basename(img_dir_paths2[j]))
 
     print("video_num_file:", video_num_file,"video_num_dir:", video_num_dir, "rate:", downsample_rate)
@@ -76,7 +75,7 @@ for j in range(len(phase_file_names2)):
             continue
         if int(phase_split[0]) % downsample_rate == 0:
             info_each = []
-            img_file_each_path = os.path.join(img_dir_paths2[j], phase_split[0] + '.jpg')
+            img_file_each_path = os.path.join(img_dir_paths2[j], ((6 - len(phase_split[0])) * '0' + phase_split[0]) + '.jpg')
             info_each.append(img_file_each_path)
             info_each.append(phase_dict[phase_split[1]])
             info_all.append(info_each)              
@@ -103,7 +102,7 @@ train_num_each_80 = []
 val_num_each_80 = []
 test_num_each_80 = []
 
-for i in range(32):
+for i in range(2):
     train_num_each_80.append(len(all_info_80[i]))
     for j in range(len(all_info_80[i])):
         train_file_paths_80.append(all_info_80[i][j][0])
@@ -112,7 +111,7 @@ for i in range(32):
 print(len(train_file_paths_80))
 print(len(train_labels_80))
 
-for i in range(32,40):
+for i in range(3, 4):
     val_num_each_80.append(len(all_info_80[i]))
     for j in range(len(all_info_80[i])):
         val_file_paths_80.append(all_info_80[i][j][0])
